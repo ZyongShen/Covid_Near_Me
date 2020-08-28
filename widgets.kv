@@ -1,0 +1,250 @@
+<ContentNavigationDrawer>:
+
+    ScrollView:
+
+        MDList: 
+
+            OneLineListItem:
+                text: "Search"
+                on_press:
+                    root.nav_drawer.set_state("close")
+                    root.screen_manager.current = "search"
+
+            OneLineListItem:
+                text: "Filter Results"
+                on_press:
+                    root.nav_drawer.set_state("close")
+                    root.screen_manager.current = "filter"
+
+            OneLineListItem:
+                text: "Results"
+                on_press:
+                    root.nav_drawer.set_state("close")
+                    root.screen_manager.current = "results"
+
+            
+
+Screen:
+
+    MDToolbar:
+        id: toolbar
+        pos_hint: {"top": 1}
+        elevation: 10
+        title: "Covid Near Me"
+        md_bg_color: 1, 0, 0, 0.4
+        left_action_items: [["menu", lambda x: nav_drawer.set_state("open")]]
+
+    NavigationLayout:
+        x: toolbar.height
+
+        ScreenManager:
+            id: screen_manager
+
+            Screen:
+                name: "search"
+
+                MDTextFieldRound:
+                    id: input
+                    hint_text: "Town"
+                    size_hint_max_x: 300
+                    multiline: False
+                    halign: "center"
+                    color_mode: 'accent'
+                    pos_hint: {'center_x': .5, 'center_y': 0.7}
+                    text_color: 0, 0, 0, 1
+                    md_bg_color: 1, 1, 1, 0.4
+                    
+                    
+
+                MDFillRoundFlatButton:
+                    text: "Search"
+                    text_color: 1, 1, 1, 1
+                    pos_hint: {'center_x': .5, 'center_y': .6}
+                    md_bg_color: 1, 0, 0, .4
+                    width: 300
+                    on_press: app.displayData()
+
+                MDFillRoundFlatButton:
+                    text: "Find My Location"
+                    text_color: 1, 1, 1, 1
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                    md_bg_color: 1, 0, 0, 0.4
+                    on_press: app.fromLocFinder()
+
+
+            Screen:
+                name: "results"
+
+                MDCard:
+                    orientation: "vertical"
+                    padding: "8dp"
+                    size_hint: None, None
+                    size: "380dp", "280dp"
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+                    MDLabel:
+                        id: townTitle
+                        text: "Town"
+                        theme_text_color: "Secondary"
+                        size_hint_y: None
+                        height: self.texture_size[1]
+
+                    MDSeparator:
+                        height: "2dp"
+
+                    ScrollView:
+                        do_scroll_x: False
+                        do_scroll_y: True
+
+                        MDLabel:
+                            id: covidInfo
+                            text: ""
+                            size_hint_y: None
+                            size: self.texture_size
+
+
+            Screen:
+                name: "filter"
+
+                MDFillRoundFlatButton:
+                    id: refresh
+                    text: "Refresh"
+                    text_color: 1, 1, 1, 1
+                    pos_hint: {'center_x': .5, 'center_y': .8}
+                    md_bg_color: 1, 0, 0, .4
+                    width: 300
+                    on_press: app.refresh()
+
+
+                ScrollView:
+                    do_scroll_x: False
+                    do_scroll_y: True
+                    pos_hint: {'center_x': .5, 'center_y': .4}
+                    size_hint: (.5, .6)
+                    scroll_type: ['bars']
+
+                    GridLayout:
+                        id: scroll_filters
+                        size_hint_y: None
+                        cols: 2
+                        pos_hint: {'center_x': .5}
+                        height: self.minimum_height
+
+
+                        MDSwitch:
+                            id: confirmedcases
+                            pos_hint: {'center_x': .6, 'center_y': .7}
+                            size_hint_x: None
+                            active: True
+
+                        MDLabel:
+                            text: "Total Confirmed Cases"
+                            pos_hint: {'center_x': .5, 'center_y': .7}
+                            size_hint_x: None
+                            width: 300
+                            halign: 'center'
+
+                        MDSwitch:
+                            id: rate
+                            pos_hint: {'center_x': .6, 'center_y': .6}
+                            active: True
+                    
+                        MDLabel:
+                            text: "Case Rate"
+                            pos_hint: {'center_x': .5, 'center_y': .6}
+                            size_hint_x: None
+                            width: 300
+                            halign: 'center'
+
+
+
+                        MDSwitch:
+                            id: deaths
+                            pos_hint: {'center_x': .6, 'center_y': .5}
+                            active: True
+
+                        MDLabel:
+                            text: "Deaths"
+                            pos_hint: {'center_x': .5, 'center_y': .5}
+                            size_hint_x: None
+                            width: 300
+                            halign: 'center'
+
+
+                        MDSwitch:
+                            id: probcases
+                            pos_hint: {'center_x': .6, 'center_y': .4}
+
+                        MDLabel:
+                            text: "Total Probable Cases"
+                            pos_hint: {'center_x': .5, 'center_y': .4}
+                            size_hint_x: None
+                            width: 300
+                            halign: 'center'
+
+
+                        MDSwitch:
+                            id: peopletested
+                            pos_hint: {'center_x': .6, 'center_y': .3}
+
+                        MDLabel:
+                            text: "People Tested"
+                            pos_hint: {'center_x': .5, 'center_y': .3}
+                            size_hint_x: None
+                            width: 300
+                            halign: 'center'
+
+
+                        MDSwitch:
+                            id: totaltests
+                            pos_hint: {'center_x': .6, 'center_y': .2}
+
+                        MDLabel:
+                            text: "Total Tests"
+                            pos_hint: {'center_x': .5, 'center_y': .2}
+                            size_hint_x: None
+                            width: 300
+                            halign: 'center'
+
+
+                        MDSwitch:
+                            id: numberpositives
+                            pos_hint: {'center_x': .6, 'center_y': 0}
+
+                        MDLabel:
+                            text: "Total Number of Positives"
+                            pos_hint: {'center_x': .5, 'center_y': 0}
+                            size_hint_x: None
+                            width: 300
+                            halign: 'center'
+
+
+                        MDSwitch:
+                            id: numbernegatives
+                            pos_hint: {'center_x': .6, 'center_y': -.1}
+
+                        MDLabel:
+                            text: "Total Number of Negatives"
+                            pos_hint: {'center_x': .5, 'center_y': -.1}
+                            size_hint_x: None
+                            width: 300
+                            halign: 'center'
+
+                        MDSwitch:
+                            id: numberunknowns
+                            pos_hint: {'center_x': .6, 'center_y': -.2}
+
+                        MDLabel:
+                            text: "Total Number of Unknowns"
+                            pos_hint: {'center_x': .5, 'center_y': -.2}
+                            size_hint_x: None
+                            width: 300
+                            halign: 'center'
+                        
+                
+        MDNavigationDrawer:
+            id: nav_drawer
+
+            ContentNavigationDrawer:
+                screen_manager: screen_manager
+                nav_drawer: nav_drawer
