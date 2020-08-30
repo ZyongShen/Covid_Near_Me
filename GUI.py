@@ -14,12 +14,18 @@ class ContentNavigationDrawer(BoxLayout):
     pass
 
 class CovidApp(MDApp):
+
     def build(self):
         return Builder.load_file("widgets.kv")
 
-    def doRefresh(self):
-        pass
 
+    def trackMethod(self, method):
+        if (method == "typeInput"):
+            return "Typing"
+        if (method == "findMe"):
+            return "LocFinder"
+
+    
     def prepData(self, town = ""):
         handler = dataHandle()
         myFilters = handler.activateFilters(self.root.ids)
@@ -27,12 +33,9 @@ class CovidApp(MDApp):
         date, name, data = handler.getData(myFilters, town)
         return date, name, data
 
-    def displayData(self, town = ""):
+    def displayData(self):
 
-        if town is "":
-            inputTown = str(self.root.ids.input.text)
-        else:
-            inputTown = town
+        inputTown = str(self.root.ids.input.text)
 
         # Check if getting data will return a value or not
         try:
@@ -56,10 +59,13 @@ class CovidApp(MDApp):
         locFinder = locateMe()
         town = locFinder.getTown()
         town = town.replace(" ", "")
-        self.displayData(town)
+        self.root.ids.input.text = town
+        self.displayData()
 
     def refresh(self):
         self.displayData()
+
+    
 
     
 
